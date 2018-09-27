@@ -1,5 +1,6 @@
 #include "visualizer.h"
 #include "utility.h"
+#include <cmath>
 
 sf::Texture& Visualizer::getMainTexture()
 {
@@ -186,13 +187,13 @@ bool Visualizer::waitFor(int ms, std::string message)
 }
 
 Visualizer::Visualizer(unsigned int width, unsigned int height, unsigned int scaling)
-    : window(sf::VideoMode::getDesktopMode(), "Evolucao de Imagens", sf::Style::Fullscreen, sf::ContextSettings(0, 0, 8)),
+    : window(sf::VideoMode::getDesktopMode(), "Evolucao de Imagens", sf::Style::Default, sf::ContextSettings(0, 0, 8)),
       scaling(scaling), progressTextures(6)
 {
     progressScaling = scaling / 2.0;
     chartHeight = std::round(window.getSize().y * 0.15);
 
-    font.loadFromFile("fonts/Times_New_Roman.ttf");
+    font.loadFromFile("fonts/DejaVuSans.ttf");
 }
 
 void Visualizer::displayImage(char* data, unsigned int size)

@@ -95,6 +95,7 @@ sf::Image load(char* data, int size) {
 }
 
 Action begin(const sf::Image& targetImage, Visualizer& visualizer, Mode mode) {
+    std::cout << "Starting up...\n";
     visualizer.setModeString("Modo " + std::string(mode == Mode::Local ? "local" : "remoto"));
     visualizer.displayMessage("Preparando...");
 
@@ -233,6 +234,7 @@ void startSocket(Visualizer& visualizer) {
                 QByteArray countData = readDataFromSocket(socket, 4);
                 int count = *((int*) countData.data());
 
+                std::cout << "Count = " << count << "\n";
                 if (count != 0) {
                     timer.stop();
                     pollLoop.quit();
@@ -249,8 +251,9 @@ void startSocket(Visualizer& visualizer) {
             });
 
             timer.start(1000);
-            interactionTimer.start(50);
+            interactionTimer.start(100);
             pollLoop.exec();
+            std::cout << "Action: " << action << "\n";
 
             if (action == Action::Switch) {
                 loop.quit();
@@ -270,7 +273,7 @@ void startSocket(Visualizer& visualizer) {
 
         QObject::connect(&socket, &QTcpSocket::connected, [&] { socket.write("password", 8); });
 
-        socket.connectToHost("lia-opa.ddns.net", 3099);
+        socket.connectToHost("localhost", 3099);
         loop.exec();
 
         if (action == Action::Switch) {
